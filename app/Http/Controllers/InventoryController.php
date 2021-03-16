@@ -30,7 +30,9 @@ class InventoryController extends Controller
         $inventories = Inventory::query()
             ->join('products', 'products.id', '=', 'inventories.product_id')
             ->where('products.admin_id', $user->id)
+            ->search(request('searchTerm'))
             ->select([
+                'products.id as product_id',
                 'products.product_name',
                 'inventories.sku',
                 'inventories.quantity',

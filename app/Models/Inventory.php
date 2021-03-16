@@ -14,4 +14,18 @@ class Inventory extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function scopeSearch($query, string $searchTerm = null)
+    {
+        if (empty($searchTerm)){
+            return $query;
+        }
+
+        $searchTerm = $searchTerm . '%';
+        $query->where('sku', 'like', $searchTerm)
+            ->orWhereHas('product', function($query) use ($searchTerm){
+                $query->where('product_name', 'like', '%' . $searchTerm)
+                    ->orWhere('id', '=', $searchTerm);
+            });
+    }
+
 }
