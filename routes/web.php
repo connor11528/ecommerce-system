@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', 'ProductController@index')->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', 'App\Http\Controllers\InventoryController@index')->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';

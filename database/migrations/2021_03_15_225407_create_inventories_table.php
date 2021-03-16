@@ -15,7 +15,7 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id');
+            $table->foreignId('product_id')->index();
             $table->unsignedBigInteger('quantity')->default(0);
             $table->string('color')->nullable();
             $table->string('size')->nullable();
@@ -23,7 +23,7 @@ class CreateInventoriesTable extends Migration
             $table->unsignedInteger('price_cents')->nullable();
             $table->unsignedInteger('sale_price_cents')->nullable();
             $table->unsignedInteger('cost_cents')->nullable();
-            $table->string('sku');
+            $table->string('sku')->index();
             $table->integer('length')->nullable();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();

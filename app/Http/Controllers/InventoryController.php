@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventory;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InventoryController extends Controller
 {
+    const PAGINATION_COUNT = 25;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,31 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+
+        // total inventory count
+        $totalInventory = Inventory::query()
+            ->join('products', 'products.id', '=', 'inventories.product_id')
+            ->where('products.admin_id', $user->id)
+            ->sum('inventories.quantity');
+
+        // Product Name, sku, quantity, color, size, price and cost
+        $inventories = Inventory::query()
+            ->join('products', 'products.id', '=', 'inventories.product_id')
+            ->where('products.admin_id', $user->id)
+            ->select([
+                'products.product_name',
+                'inventories.sku',
+                'inventories.quantity',
+                'inventories.color',
+                'inventories.size',
+                'inventories.price_cents',
+                'inventories.cost_cents'
+            ])
+            ->orderBy('products.product_name')
+            ->paginate(self::PAGINATION_COUNT);
+
+        return view('dashboard', compact('inventories', 'totalInventory'));
     }
 
     /**

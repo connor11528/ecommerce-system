@@ -15,7 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('product_name');
+            $table->string('product_name')->index();
             $table->longText('description')->nullable();
             $table->string('style')->nullable();
             $table->string('brand')->nullable();
@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->string('product_type')->nullable();
             $table->unsignedInteger('shipping_price')->nullable();
             $table->mediumText('note')->nullable();
-            $table->foreignId('admin_id');
+            $table->foreignId('admin_id')->index();
             $table->timestamps();
         });
     }
